@@ -1,56 +1,53 @@
-TDDBC for Ruby with RSpec
-====================================
+# 収益認識
 
-これは、TDDBCのRuby向けRSpecプロジェクトです。
+いま、ソフトウェア製品を扱う小さなECサイトを営んでいるとする。
 
-[![Build Status](https://travis-ci.org/tddbc/ruby_rspec.svg?branch=master)](https://travis-ci.org/tddbc/ruby_rspec)
+（なお、本演習では顧客、消費税、税率、通貨、お釣り、在庫などの概念は扱わないものとする）
 
-## 動作確認環境
-* ruby 2.7以降
 
-## セットアップ
-```bash
-gem install bundler
-bundle install
-```
+## 注意
 
-`rspec` コマンドを実行して
+本演習は TDD を体験することを主眼としていますので、 __プログラミングの速さを競っているのではない__ 点にご注意ください。
+機能を粗く速く実装することよりも、テストを書いて動かすことによるフィードバックを受けながら、
+リファクタリングを忘れずに着実に進めていくことが、本演習では重要です。
 
-```bash
-$ rspec
 
-Sample
-  #say
-    Using expect to
-      should say 'Hello TDD BootCamp!'
-    Using subject it should
-      should eq "Yeah! TDD BootCamp!"
-    Using power assert
-      should 
-            be asserted by{ sample.say(greeting) == "Wow! TDD BootCamp!" }
-                            |      |   |         |
-                            |      |   |         true
-                            |      |   "Wow!"
-                            |      "Wow! TDD BootCamp!"
-                            #<Sample:0x0000563cf08833e8>
+## 問題: 製品、契約、売上、収益認識
 
-Finished in 0.10792 seconds (files took 0.80775 seconds to load)
-3 examples, 0 failures
-```
+いま、以下のつの種類（category）のソフトウェア製品（product）を扱っている。
 
-のようにテストが正常終了すればOKです。
+- ワードプロセッサ
+- スプレッドシート
 
-## ライブラリ
-### [guard](https://github.com/guard/guard)
-`guard` コマンドを実行すると入力待ちの状態になるので、あとはファイルが変更される度にテストが実行されます
+製品は名前（name）と価格（price）を持つ（今回は消費税を扱わないので、単純に価格と考えてください）。
 
-OSごとに下記のソフトを入れるとテスト結果がOS毎の通知欄に表示されます
+例:
 
-#### Windows
-notifu: http://www.paralint.com/projects/notifu/
+- ワードプロセッサ「MS Word」の価格は 18,800円
+- ワードプロセッサ「一太郎」の価格は 20,000円
+- スプレッドシート「MS Excel」の価格は 27,800円
+- スプレッドシート「三四郎」の価格は 5,000円
 
-#### Mac
-growl: http://growl.info/
+現時点では1回にどれか1つの製品を1つのみ購入する契約（contract）ができるものとする（カートに一つしか入らない貧弱なECサイトのイメージ）。契約が成立（sign）した場合、
 
-#### 他Unix系(Linux, FreeBSD, OpenBSD and Solaris)
-libnotify: https://developer.gnome.org/libnotify/
+- ワードプロセッサは契約日（signed_on または signedDate）に直ちに売上（revenue）全額を収益認識（revenue recognition）する
+- スプレッドシートは契約日に売上の2/3、30日後に1/3を収益認識する
+
+なお、収益認識の総和は売上とかならず __完全一致__ しなければならない。
+
+
+例:
+
+- 本日(2/1)「MS Word」が1つ売れる契約が成立したとき、2/1 に 18,800円収益認識される
+- 本日(2/1)「MS Excel」が1つ売れる契約が成立したとき、2/1 に 18,534円、3/3 に9,266円収益認識される
+- （「一太郎」、「三四郎」に関してもテストしてください）
+
+--
+
+短縮 URL: https://bit.ly/3nkWwYq
+
+
+![クリエイティブ・コモンズ 表示 - 継承 2.1 日本](http://i.creativecommons.org/l/by-sa/2.1/jp/88x31.png)
+この演習問題は [クリエイティブ・コモンズ 表示 - 継承 2.1 日本 ライセンス](http://creativecommons.org/licenses/by-sa/2.1/jp/)の下に提供されています。
+
+また、この演習問題は Martin Fowler の著作 『[Patterns of Enterprise Application Architecture](https://www.amazon.co.jp/dp/0321127420)』 から着想を得ています。
